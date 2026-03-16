@@ -28,15 +28,15 @@ body {
 /* Print Styles for ATS Compatibility - Single Page Optimized */
 @media print {
   @page {
-    margin: 0.4in 0.5in;
+    margin: 0.25in 0.4in;
     size: A4;
   }
   
   body {
     background: white;
     color: black;
-    font-size: 10pt;
-    line-height: 1.3;
+    font-size: 9.5pt;
+    line-height: 1.25;
   }
   
   /* Hide non-essential elements */
@@ -46,69 +46,69 @@ body {
   
   /* Compact spacing for single page */
   h1 {
-    font-size: 18pt !important;
-    margin-bottom: 4pt !important;
+    font-size: 16pt !important;
+    margin-bottom: 2pt !important;
   }
   
   h2 {
-    font-size: 12pt !important;
-    margin-top: 8pt !important;
-    margin-bottom: 4pt !important;
+    font-size: 11pt !important;
+    margin-top: 6pt !important;
+    margin-bottom: 3pt !important;
     padding-bottom: 2pt !important;
     page-break-after: avoid;
   }
   
   h3 {
-    font-size: 11pt !important;
+    font-size: 10.5pt !important;
     margin-bottom: 2pt !important;
   }
   
   h4 {
-    font-size: 10pt !important;
+    font-size: 9.5pt !important;
   }
   
   p, li, span, div {
-    font-size: 9pt !important;
-    line-height: 1.3 !important;
+    font-size: 8.5pt !important;
+    line-height: 1.25 !important;
   }
   
   /* Compact section spacing */
   section {
-    margin-bottom: 8pt !important;
+    margin-bottom: 6pt !important;
   }
   
   /* Compact list items */
   ul, ol {
     margin: 0 !important;
-    padding-left: 16pt !important;
+    padding-left: 14pt !important;
     page-break-inside: avoid;
   }
   
   li {
     margin-bottom: 2pt !important;
-    line-height: 1.3 !important;
+    line-height: 1.25 !important;
   }
   
   /* Compact project/experience items */
   .mb-4 {
-    margin-bottom: 6pt !important;
-  }
-  
-  .mb-3 {
     margin-bottom: 4pt !important;
   }
   
-  .mb-2 {
+  .mb-3 {
     margin-bottom: 3pt !important;
   }
   
-  .mb-1 {
+  .mb-2 {
     margin-bottom: 2pt !important;
+  }
+  
+  .mb-1 {
+    margin-bottom: 1pt !important;
   }
   
   /* Compact padding */
   .p-8, .p-12, .print\:p-12 {
-    padding: 12pt 16pt !important;
+    padding: 8pt 16pt !important;
   }
   
   /* Remove shadows and adjust spacing */

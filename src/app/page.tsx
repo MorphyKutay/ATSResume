@@ -78,51 +78,59 @@ export default function Home() {
         <div className="p-8 md:p-12 print:p-12">
           <ResumeHeader contact={resumeData.contact} />
 
-          {/* Professional Summary */}
-          {visibleSections.summary && (
-          <ResumeSection title="Professional Summary">
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {resumeData.summary}
-            </p>
-          </ResumeSection>
-          )}
+          <div className="flex flex-col md:flex-row print:flex-row gap-8 mt-4">
+            {/* Left Column (1/3) */}
+            <div className="w-full md:w-[32%] print:w-[32%] flex flex-col gap-6 print:gap-4">
+              {/* Skills */}
+              {visibleSections.skills && (
+              <ResumeSection title="Skills">
+                <SkillsSection skills={resumeData.skills} />
+              </ResumeSection>
+              )}
 
-          {/* Work Experience */}
-          {visibleSections.experience && (
-          <ResumeSection title="Work Experience">
-            {resumeData.experience.map((exp) => (
-              <ExperienceItem key={exp.id} experience={exp} />
-            ))}
-          </ResumeSection>
-          )}
+              {/* Education */}
+              {visibleSections.education && (
+              <ResumeSection title="Education">
+                {resumeData.education.map((edu) => (
+                  <EducationItem key={edu.id} education={edu} />
+                ))}
+              </ResumeSection>
+              )}
+            </div>
 
-          {/* Education */}
-          {visibleSections.education && (
-          <ResumeSection title="Education">
-            {resumeData.education.map((edu) => (
-              <EducationItem key={edu.id} education={edu} />
-            ))}
-          </ResumeSection>
-          )}
+            {/* Right Column (2/3) */}
+            <div className="w-full md:w-[64%] print:w-[64%] flex flex-col gap-6 print:gap-4">
+              {/* Professional Summary */}
+              {visibleSections.summary && (
+              <ResumeSection title="Professional Summary">
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {resumeData.summary}
+                </p>
+              </ResumeSection>
+              )}
 
-          {/* Projects */}
-          {visibleSections.projects && (
-          <ResumeSection title="Projects">
-            {resumeData.projects.map((proj) => (
-              <ProjectItem 
-                key={proj.id} 
-                project={proj}
-              />
-            ))}
-          </ResumeSection>
-          )}
+              {/* Work Experience */}
+              {visibleSections.experience && (
+              <ResumeSection title="Work Experience">
+                {resumeData.experience.map((exp) => (
+                  <ExperienceItem key={exp.id} experience={exp} />
+                ))}
+              </ResumeSection>
+              )}
 
-          {/* Skills */}
-          {visibleSections.skills && (
-          <ResumeSection title="Skills">
-            <SkillsSection skills={resumeData.skills} />
-          </ResumeSection>
-          )}
+              {/* Projects */}
+              {visibleSections.projects && (
+              <ResumeSection title="Projects">
+                {resumeData.projects.map((proj) => (
+                  <ProjectItem 
+                    key={proj.id} 
+                    project={proj}
+                  />
+                ))}
+              </ResumeSection>
+              )}
+            </div>
+          </div>
           </div>
         </main>
 
