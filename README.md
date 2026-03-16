@@ -2,7 +2,7 @@
 
 A modern, professional resume builder optimized for Applicant Tracking Systems (ATS). Built with Next.js 15, React 19, TypeScript, and Tailwind CSS.
 
-![ATS Resume Builder](https://img.shields.io/badge/Next.js-15.5.4-black?style=flat-square&logo=next.js)
+![ATS Resume Builder](https://img.shields.io/badge/Next.js-15.5.12-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19.1.0-blue?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=flat-square&logo=tailwind-css)
