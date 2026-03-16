@@ -300,6 +300,16 @@ export default function Sidebar({
                     className="w-full px-2 py-1.5 text-sm text-gray-900 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"
                     placeholder="https://github.com/..."
                   />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Website</label>
+                  <input
+                    type="url"
+                    value={localData.contact.website || ''}
+                    onChange={(e) => updateContact('website', e.target.value)}
+                    className="w-full px-2 py-1.5 text-sm text-gray-900 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"
+                    placeholder="https://..."
+                  />
               </div>
             </div>
           )}
