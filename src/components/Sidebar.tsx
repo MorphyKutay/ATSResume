@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ResumeData, Experience, Education, Skill, Project, Certificate } from '@/types/resume';
+import { downloadResumeBackup, parseResumeBackup } from '@/lib/resumeBackup';
 import { 
   Eye, 
   EyeOff, 
@@ -15,7 +16,8 @@ import {
   ChevronRight,
   Plus,
   Trash2,
-  X
+  Upload,
+  Download,
 } from 'lucide-react';
 
 type VisibleSections = {
@@ -46,6 +48,12 @@ export default function Sidebar({
 }: SidebarProps) {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [localData, setLocalData] = useState<ResumeData>(resumeData);
+  const [backupMessage, setBackupMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setLocalData(resumeData);
+  }, [resumeData]);
 
   const sections: Array<{ id: keyof VisibleSections | 'contact'; label: string; icon: any; toggleable: boolean }> = [
     { id: 'contact', label: 'Contact Information', icon: User, toggleable: false },
@@ -59,6 +67,35 @@ export default function Sidebar({
 
   const handleSave = () => {
     onUpdateData(localData);
+    setBackupMessage({ type: 'success', text: 'Değişiklikler kaydedildi.' });
+  };
+
+  const handleExportBackup = () => {
+    downloadResumeBackup(localData);
+    setBackupMessage({ type: 'success', text: 'JSON yedeği indirildi.' });
+  };
+
+  const handleImportBackup = async (file: File) => {
+    try {
+      const text = await file.text();
+      const imported = parseResumeBackup(text);
+
+      const confirmed = window.confirm(
+        'Mevcut özgeçmiş verileri yedek dosyasıyla değiştirilecek. Devam etmek istiyor musunuz?'
+      );
+      if (!confirmed) return;
+
+      setLocalData(imported);
+      onUpdateData(imported);
+      setBackupMessage({ type: 'success', text: 'JSON yedeği yüklendi.' });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Yedek yüklenemedi.';
+      setBackupMessage({ type: 'error', text: message });
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
   };
 
   const updateContact = (field: string, value: string) => {
@@ -680,7 +717,49 @@ export default function Sidebar({
       </div>
 
       {/* Footer */}
-      <div className="flex-none p-4 border-t bg-gray-50">
+      <div className="flex-none p-4 border-t bg-gray-50 space-y-3">
+        <div>
+          <p className="text-xs font-semibold text-gray-700 mb-2">JSON Yedek</p>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={handleExportBackup}
+              className="flex items-center justify-center gap-1.5 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Yedek Al
+            </button>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center justify-center gap-1.5 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              <Upload className="w-4 h-4" />
+              Yedek Yükle
+            </button>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleImportBackup(file);
+            }}
+          />
+        </div>
+
+        {backupMessage && (
+          <p
+            className={`text-xs ${
+              backupMessage.type === 'success' ? 'text-green-700' : 'text-red-600'
+            }`}
+          >
+            {backupMessage.text}
+          </p>
+        )}
+
         <button
           onClick={handleSave}
           className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-medium"
