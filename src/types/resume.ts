@@ -54,5 +54,15 @@ export interface ResumeData {
   education: Education[];
   projects: Project[];
   skills: Skill[];
+  certificate: Certificate[];
 }
 
+
+export interface Certificate {
+  id: string;
+  certificaten: string;
+  issueDate: string;
+  expirationdate?: string;
+  certificationID: string;
+  certificationURL?: string;
+}

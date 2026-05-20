@@ -6,6 +6,7 @@ import ResumeSection from '@/components/ResumeSection';
 import ExperienceItem from '@/components/ExperienceItem';
 import EducationItem from '@/components/EducationItem';
 import SkillsSection from '@/components/SkillsSection';
+import CertificateItem from "@/components/certificateItem";
 import ProjectItem from '@/components/ProjectItem';
 import Sidebar from '@/components/Sidebar';
 import { sampleResumeData } from '@/data/sampleData';
@@ -18,6 +19,7 @@ type VisibleSections = {
   education: boolean;
   projects: boolean;
   skills: boolean;
+  certificates: boolean;
 };
 
 export default function Home() {
@@ -28,6 +30,7 @@ export default function Home() {
     education: true,
     projects: true,
     skills: true,
+    certificates: true,
   });
 
   const handleDownloadPDF = () => {
@@ -96,6 +99,17 @@ export default function Home() {
                 ))}
               </ResumeSection>
               )}
+
+              {/* CERT */}
+              {visibleSections.certificates && (
+                  <ResumeSection title="Certificates">
+                    {resumeData.certificate.map((cert) => (
+                        <CertificateItem key={cert.id} certificate={cert} />
+                    ))}
+
+                  </ResumeSection>
+              )}
+
             </div>
 
             {/* Right Column (2/3) */}

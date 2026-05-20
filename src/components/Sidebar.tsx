@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ResumeData, Experience, Education, Skill, Project } from '@/types/resume';
+import { ResumeData, Experience, Education, Skill, Project, Certificate } from '@/types/resume';
 import { 
   Eye, 
   EyeOff, 
@@ -11,6 +11,7 @@ import {
   GraduationCap, 
   FolderKanban, 
   Code,
+  Award,
   ChevronRight,
   Plus,
   Trash2,
@@ -23,6 +24,7 @@ type VisibleSections = {
   education: boolean;
   projects: boolean;
   skills: boolean;
+  certificates: boolean;
 };
 
 interface SidebarProps {
@@ -52,6 +54,7 @@ export default function Sidebar({
     { id: 'education', label: 'Education', icon: GraduationCap, toggleable: true },
     { id: 'projects', label: 'Projects', icon: FolderKanban, toggleable: true },
     { id: 'skills', label: 'Skills', icon: Code, toggleable: true },
+    { id: 'certificates', label: 'Certificates', icon: Award, toggleable: true },
   ];
 
   const handleSave = () => {
@@ -171,6 +174,32 @@ export default function Sidebar({
     setLocalData({
       ...localData,
       skills: localData.skills.filter((_, i) => i !== index)
+    });
+  };
+
+  const addCertificate = () => {
+    const newCert: Certificate = {
+      id: Date.now().toString(),
+      certificaten: '',
+      issueDate: '',
+      certificationID: '',
+    };
+    setLocalData({ ...localData, certificate: [...localData.certificate, newCert] });
+  };
+
+  const updateCertificate = (id: string, field: string, value: any) => {
+    setLocalData({
+      ...localData,
+      certificate: localData.certificate.map(cert =>
+        cert.id === id ? { ...cert, [field]: value } : cert
+      )
+    });
+  };
+
+  const removeCertificate = (id: string) => {
+    setLocalData({
+      ...localData,
+      certificate: localData.certificate.filter(cert => cert.id !== id)
     });
   };
 
@@ -536,6 +565,68 @@ export default function Sidebar({
                       placeholder="GitHub"
                       className="w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
                     />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {activeSection === 'certificates' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-gray-900">Sertifikalar</h4>
+                <button
+                  onClick={addCertificate}
+                  className="flex items-center gap-1 text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
+                >
+                  <Plus className="w-3 h-3" />
+                  Add
+                </button>
+              </div>
+              {localData.certificate.map((cert) => (
+                <div key={cert.id} className="border border-gray-200 rounded p-3 relative space-y-2">
+                  <button
+                    onClick={() => removeCertificate(cert.id)}
+                    className="absolute top-1 right-1 text-red-600 hover:bg-red-50 p-1 rounded"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                  <input
+                    type="text"
+                    value={cert.certificaten}
+                    onChange={(e) => updateCertificate(cert.id, 'certificaten', e.target.value)}
+                    placeholder="Sertifika Adı"
+                    className="w-full px-2 py-1 text-sm text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
+                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={cert.issueDate}
+                      onChange={(e) => updateCertificate(cert.id, 'issueDate', e.target.value)}
+                      placeholder="Veriliş"
+                      className="flex-1 px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
+                    />
+                    <input
+                      type="text"
+                      value={cert.expirationdate || ''}
+                      onChange={(e) => updateCertificate(cert.id, 'expirationdate', e.target.value)}
+                      placeholder="Bitiş (ops.)"
+                      className="flex-1 px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={cert.certificationID}
+                    onChange={(e) => updateCertificate(cert.id, 'certificationID', e.target.value)}
+                    placeholder="Sertifika ID"
+                    className="w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
+                  />
+                  <input
+                    type="url"
+                    value={cert.certificationURL || ''}
+                    onChange={(e) => updateCertificate(cert.id, 'certificationURL', e.target.value)}
+                    placeholder="Doğrulama URL"
+                    className="w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
+                  />
                 </div>
               ))}
             </div>

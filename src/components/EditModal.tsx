@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ResumeData, Experience, Education, Skill, Project } from '@/types/resume';
+import { ResumeData, Experience, Education, Skill, Project, Certificate } from '@/types/resume';
 import { X, Plus, Trash2 } from 'lucide-react';
 
 interface EditModalProps {
@@ -12,7 +12,7 @@ interface EditModalProps {
 
 export default function EditModal({ resumeData, onSave, onClose }: EditModalProps) {
   const [data, setData] = useState<ResumeData>(JSON.parse(JSON.stringify(resumeData)));
-  const [activeTab, setActiveTab] = useState<'contact' | 'summary' | 'experience' | 'education' | 'projects' | 'skills'>('contact');
+  const [activeTab, setActiveTab] = useState<'contact' | 'summary' | 'experience' | 'education' | 'projects' | 'skills' | 'certificates'>('contact');
 
   const handleSave = () => {
     onSave(data);
@@ -116,6 +116,29 @@ export default function EditModal({ resumeData, onSave, onClose }: EditModalProp
     });
   };
 
+  const addCertificate = () => {
+    const newCert: Certificate = {
+      id: Date.now().toString(),
+      certificaten: '',
+      issueDate: '',
+      certificationID: '',
+    };
+    setData({ ...data, certificate: [...data.certificate, newCert] });
+  };
+
+  const removeCertificate = (id: string) => {
+    setData({ ...data, certificate: data.certificate.filter(cert => cert.id !== id) });
+  };
+
+  const updateCertificate = (id: string, field: keyof Certificate, value: any) => {
+    setData({
+      ...data,
+      certificate: data.certificate.map(cert =>
+        cert.id === id ? { ...cert, [field]: value } : cert
+      )
+    });
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
@@ -135,7 +158,8 @@ export default function EditModal({ resumeData, onSave, onClose }: EditModalProp
             { key: 'experience', label: 'Deneyim' },
             { key: 'education', label: 'Eğitim' },
             { key: 'projects', label: 'Projeler' },
-            { key: 'skills', label: 'Yetenekler' }
+            { key: 'skills', label: 'Yetenekler' },
+            { key: 'certificates', label: 'Sertifikalar' }
           ].map(tab => (
             <button
               key={tab.key}
@@ -551,6 +575,87 @@ export default function EditModal({ resumeData, onSave, onClose }: EditModalProp
               >
                 <Plus className="w-5 h-5" />
                 Proje Ekle
+              </button>
+            </div>
+          )}
+
+          {activeTab === 'certificates' && (
+            <div className="space-y-6">
+              {data.certificate.map((cert) => (
+                <div key={cert.id} className="border border-gray-200 rounded-lg p-4 relative">
+                  <button
+                    onClick={() => removeCertificate(cert.id)}
+                    className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Sertifika Adı</label>
+                      <input
+                        type="text"
+                        value={cert.certificaten}
+                        onChange={(e) => updateCertificate(cert.id, 'certificaten', e.target.value)}
+                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"
+                        placeholder="AWS Certified Solutions Architect..."
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Veriliş Tarihi</label>
+                        <input
+                          type="text"
+                          value={cert.issueDate}
+                          onChange={(e) => updateCertificate(cert.id, 'issueDate', e.target.value)}
+                          className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"
+                          placeholder="2023"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Bitiş Tarihi (Opsiyonel)</label>
+                        <input
+                          type="text"
+                          value={cert.expirationdate || ''}
+                          onChange={(e) => updateCertificate(cert.id, 'expirationdate', e.target.value)}
+                          className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"
+                          placeholder="2026"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Sertifika ID</label>
+                      <input
+                        type="text"
+                        value={cert.certificationID}
+                        onChange={(e) => updateCertificate(cert.id, 'certificationID', e.target.value)}
+                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"
+                        placeholder="ABC-12345"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Doğrulama URL (Opsiyonel)</label>
+                      <input
+                        type="url"
+                        value={cert.certificationURL || ''}
+                        onChange={(e) => updateCertificate(cert.id, 'certificationURL', e.target.value)}
+                        className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-gray-400"
+                        placeholder="https://..."
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <button
+                onClick={addCertificate}
+                className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:text-blue-600 flex items-center justify-center gap-2 transition-colors"
+              >
+                <Plus className="w-5 h-5" />
+                Sertifika Ekle
               </button>
             </div>
           )}

@@ -1,4 +1,4 @@
-import { ResumeData } from '@/types/resume';
+import {ResumeData} from '@/types/resume';
 
 export const sampleResumeData: ResumeData = {
   contact: {
@@ -122,6 +122,17 @@ export const sampleResumeData: ResumeData = {
       category: "Languages",
       items: ["English (Native)", "Spanish (Intermediate)"]
     }
+  ],
+  certificate: [
+    {
+      id: "1",
+      certificaten: "eLearnSecurity Certified Junior Penetration Tester",
+      issueDate: "2013",
+      expirationdate: "2017",
+      certificationID: "111111",
+      certificationURL: "https://test.com/"
+    }
   ]
+
 };
 
