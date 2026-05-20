@@ -16,6 +16,13 @@ function isString(value: unknown): value is string {
   return typeof value === 'string';
 }
 
+function requireString(value: unknown, field: string): string {
+  if (!isString(value)) {
+    throw new Error(`İletişim alanı eksik: ${field}`);
+  }
+  return value;
+}
+
 export function normalizeResumeData(raw: unknown): ResumeData {
   if (!isObject(raw)) {
     throw new Error('Geçersiz yedek formatı.');
@@ -26,20 +33,14 @@ export function normalizeResumeData(raw: unknown): ResumeData {
   }
 
   const contact = raw.contact;
-  const requiredContactFields = ['fullName', 'title', 'email', 'phone', 'location'] as const;
-  for (const field of requiredContactFields) {
-    if (!isString(contact[field])) {
-      throw new Error(`İletişim alanı eksik: ${field}`);
-    }
-  }
 
   return {
     contact: {
-      fullName: contact.fullName,
-      title: contact.title,
-      email: contact.email,
-      phone: contact.phone,
-      location: contact.location,
+      fullName: requireString(contact.fullName, 'fullName'),
+      title: requireString(contact.title, 'title'),
+      email: requireString(contact.email, 'email'),
+      phone: requireString(contact.phone, 'phone'),
+      location: requireString(contact.location, 'location'),
       linkedin: isString(contact.linkedin) ? contact.linkedin : undefined,
       github: isString(contact.github) ? contact.github : undefined,
       website: isString(contact.website) ? contact.website : undefined,
