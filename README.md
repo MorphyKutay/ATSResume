@@ -37,7 +37,7 @@ A modern, professional resume builder optimized for Applicant Tracking Systems (
 - **No backend required** - Runs entirely in the browser
 - **Fast and lightweight** - Built with Next.js 15 and Turbopack
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
