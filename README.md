@@ -213,5 +213,10 @@ If you have any questions or need help, please open an issue on GitHub.
 - 📷 Instagram: [@kutay.java](https://instagram.com/kutay.java)
 
 ---
+## 🚀 Motivation
+
+Most resume builders either generate visually complex layouts that ATS systems struggle to parse, or lack flexibility for customization. I wanted a tool that balances **professional design and ATS compatibility**, while remaining simple and fast to use.
+
+While building and refining my own resume, I found it frustrating to manage formatting, structure, and PDF export manually. So I built this project to streamline the process — allowing users to quickly create clean, optimized resumes with real-time editing and instant PDF export.
 
 **Made with ❤️ for job seekers everywhere**
