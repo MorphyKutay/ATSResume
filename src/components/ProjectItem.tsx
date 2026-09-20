@@ -14,9 +14,9 @@ export default function ProjectItem({ project }: ProjectItemProps) {
     <div className="mb-4 last:mb-0">
       {/* Başlık ve Linkler */}
       <div className="flex items-start justify-between mb-2">
-        <div className="flex-1">
-          <h3 className="text-base font-bold text-gray-900 mb-1">{project.name}</h3>
-          <div className="flex gap-3">
+        <div className="flex-1 print:flex print:items-center print:gap-3">
+          <h3 className="text-base font-bold text-gray-900 mb-1 print:mb-0">{project.name}</h3>
+          <div className="flex gap-3 print:gap-2">
             {project.link && (
               <a
                 href={project.link}
