@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ResumeData, Experience, Education, Skill, Project, Certificate } from '@/types/resume';
 import { downloadResumeBackup, parseResumeBackup } from '@/lib/resumeBackup';
+import SortableCard, { moveItem } from '@/components/SortableCard';
 import { 
   Eye, 
   EyeOff, 
@@ -240,6 +241,14 @@ export default function Sidebar({
     });
   };
 
+  const reorder = <K extends 'experience' | 'education' | 'projects' | 'skills' | 'certificate'>(
+    key: K,
+    from: number,
+    to: number
+  ) => {
+    setLocalData({ ...localData, [key]: moveItem<unknown>(localData[key], from, to) });
+  };
+
   return (
     <div className="w-96 h-screen bg-white shadow-2xl flex flex-col print:hidden sticky top-0">
       {/* Header */}
@@ -406,7 +415,7 @@ export default function Sidebar({
                 </button>
               </div>
               {localData.experience.map((exp, index) => (
-                  <div key={exp.id} className="border border-gray-200 rounded p-3 relative space-y-2">
+                  <SortableCard key={exp.id} listId="experience" index={index} onMove={(from, to) => reorder('experience', from, to)}>
                     <button
                       onClick={() => removeExperience(exp.id)}
                       className="absolute top-1 right-1 text-red-600 hover:bg-red-50 p-1 rounded"
@@ -466,7 +475,7 @@ export default function Sidebar({
                       rows={3}
                       className="w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
                     />
-                </div>
+                </SortableCard>
               ))}
             </div>
           )}
@@ -483,8 +492,8 @@ export default function Sidebar({
                     Add
                 </button>
               </div>
-              {localData.education.map((edu) => (
-                  <div key={edu.id} className="border border-gray-200 rounded p-3 relative space-y-2">
+              {localData.education.map((edu, index) => (
+                  <SortableCard key={edu.id} listId="education" index={index} onMove={(from, to) => reorder('education', from, to)}>
                     <button
                       onClick={() => removeEducation(edu.id)}
                       className="absolute top-1 right-1 text-red-600 hover:bg-red-50 p-1 rounded"
@@ -542,7 +551,7 @@ export default function Sidebar({
                       placeholder="GPA (opsiyonel)"
                       className="w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
                     />
-                </div>
+                </SortableCard>
               ))}
             </div>
           )}
@@ -559,8 +568,8 @@ export default function Sidebar({
                     Add
                 </button>
               </div>
-              {localData.projects.map((proj) => (
-                  <div key={proj.id} className="border border-gray-200 rounded p-3 relative space-y-2">
+              {localData.projects.map((proj, index) => (
+                  <SortableCard key={proj.id} listId="projects" index={index} onMove={(from, to) => reorder('projects', from, to)}>
                     <button
                       onClick={() => removeProject(proj.id)}
                       className="absolute top-1 right-1 text-red-600 hover:bg-red-50 p-1 rounded"
@@ -602,7 +611,7 @@ export default function Sidebar({
                       placeholder="GitHub"
                       className="w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
                     />
-                </div>
+                </SortableCard>
               ))}
             </div>
           )}
@@ -619,8 +628,8 @@ export default function Sidebar({
                   Add
                 </button>
               </div>
-              {localData.certificate.map((cert) => (
-                <div key={cert.id} className="border border-gray-200 rounded p-3 relative space-y-2">
+              {localData.certificate.map((cert, index) => (
+                <SortableCard key={cert.id} listId="certificate" index={index} onMove={(from, to) => reorder('certificate', from, to)}>
                   <button
                     onClick={() => removeCertificate(cert.id)}
                     className="absolute top-1 right-1 text-red-600 hover:bg-red-50 p-1 rounded"
@@ -664,7 +673,7 @@ export default function Sidebar({
                     placeholder="Doğrulama URL"
                     className="w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
                   />
-                </div>
+                </SortableCard>
               ))}
             </div>
           )}
@@ -682,7 +691,7 @@ export default function Sidebar({
                 </button>
               </div>
               {localData.skills.map((skill, index) => (
-                  <div key={index} className="border border-gray-200 rounded p-3 relative space-y-2">
+                  <SortableCard key={index} listId="skills" index={index} onMove={(from, to) => reorder('skills', from, to)}>
                     <button
                       onClick={() => removeSkillCategory(index)}
                       className="absolute top-1 right-1 text-red-600 hover:bg-red-50 p-1 rounded"
@@ -703,7 +712,7 @@ export default function Sidebar({
                       placeholder="Yetenekler (virgülle ayırın)"
                       className="w-full px-2 py-1 text-sm text-gray-900 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 placeholder:text-gray-400"
                     />
-                </div>
+                </SortableCard>
               ))}
             </div>
           )}
